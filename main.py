@@ -106,11 +106,11 @@ def process_video_background(video_id: str, image_urls: List[str], voice_audio_u
             total_frames = int(durations[i] * 30)  # Render at 30 fps
             
             if zoom_in:
-                # Slowly zoom in from 1.0 to 1.25, centering the camera viewport
-                vf_filter = f"crop=ih*9/16:ih,scale=2048:3584,zoompan=z='min(zoom+0.0008,1.25)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
+                # Slowly zoom in from 1.0 to 1.15, centering the camera viewport (reduced scale to save RAM)
+                vf_filter = f"crop=ih*9/16:ih,scale=1080:1920,zoompan=z='min(zoom+0.0005,1.15)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
             else:
-                # Slowly zoom out from 1.25 to 1.0, centering the camera viewport
-                vf_filter = f"crop=ih*9/16:ih,scale=2048:3584,zoompan=z='max(1.25-0.0008*on,1.0)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
+                # Slowly zoom out from 1.15 to 1.0, centering the camera viewport (reduced scale to save RAM)
+                vf_filter = f"crop=ih*9/16:ih,scale=1080:1920,zoompan=z='max(1.15-0.0005*on,1.0)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
             
             cmd = [
                 "ffmpeg", "-y",
@@ -118,6 +118,8 @@ def process_video_background(video_id: str, image_urls: List[str], voice_audio_u
                 "-i", img_local,
                 "-vf", vf_filter,
                 "-c:v", "libx264",
+                "-preset", "ultrafast",
+                "-threads", "1",
                 "-t", str(durations[i]),
                 "-pix_fmt", "yuv420p",
                 "-r", "30",
