@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.venv/
+env/
+.pytest_cache/
+.vscode/
+.idea/
+*.mp4
+*.mp3
+inputs.txt
