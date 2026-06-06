@@ -226,6 +226,7 @@ def generate_video(payload: VideoRequest, background_tasks: BackgroundTasks):
     }
 
 @app.get("/health")
+@app.get("/healthz")
 def health_check():
     """
     Health check endpoint for Render.com keep-alive and readiness check.
