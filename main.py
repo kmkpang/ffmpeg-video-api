@@ -107,10 +107,10 @@ def process_video_background(video_id: str, image_urls: List[str], voice_audio_u
             
             if zoom_in:
                 # Slowly zoom in from 1.0 to 1.25, centering the camera viewport
-                vf_filter = f"scale=2048:3584,zoompan=z='min(zoom+0.0008,1.25)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
+                vf_filter = f"crop=ih*9/16:ih,scale=2048:3584,zoompan=z='min(zoom+0.0008,1.25)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
             else:
                 # Slowly zoom out from 1.25 to 1.0, centering the camera viewport
-                vf_filter = f"scale=2048:3584,zoompan=z='max(1.25-0.0008*on,1.0)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
+                vf_filter = f"crop=ih*9/16:ih,scale=2048:3584,zoompan=z='max(1.25-0.0008*on,1.0)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={total_frames}:s=1080x1920,setsar=1"
             
             cmd = [
                 "ffmpeg", "-y",
